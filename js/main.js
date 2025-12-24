@@ -25,11 +25,14 @@ document.addEventListener('click', e=>{
 })
 
 // animate logo on scroll
+let lastScrollY = window.scrollY;
 window.addEventListener('scroll', () => {
   const logo = document.querySelector('.logo');
-  if (window.scrollY > 50) {
+  const currentScrollY = window.scrollY;
+  if (currentScrollY < lastScrollY && currentScrollY < 50) {
     logo.classList.add('animated');
   } else {
     logo.classList.remove('animated');
   }
+  lastScrollY = currentScrollY;
 });
