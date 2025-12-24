@@ -13,7 +13,7 @@ body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',
 .container{max-width:1100px;margin:0 auto;padding:2rem}
 .site-header{backdrop-filter:blur(6px);position:sticky;top:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-bottom:1px solid rgba(255,255,255,0.03)}
 .site-header .container{display:flex;align-items:center;justify-content:space-between}
-.logo{margin:0;font-weight:800;letter-spacing:-0.5px;font-size:1.1rem}
+.logo{margin:0;font-weight:800;letter-spacing:-0.5px;font-size:2rem}
 nav a{color:var(--muted);margin-left:1rem;text-decoration:none}
 
 /* mobile nav */
@@ -24,6 +24,10 @@ nav a{color:var(--muted);margin-left:1rem;text-decoration:none}
 .hero .lead{color:var(--muted);max-width:760px;margin:0.5rem auto 1.5rem;position:relative;z-index:1}
 
 @keyframes floatBG{0%{transform:translateY(-6%) scale(1.35)}50%{transform:translateY(6%) scale(1.4)}100%{transform:translateY(-6%) scale(1.35)}}
+
+@keyframes logoPulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+
+.logo.animated{animation:logoPulse 0.6s ease-in-out}
 .btn{display:inline-block;padding:0.6rem 1rem;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;border-radius:10px;text-decoration:none;box-shadow:0 6px 30px rgba(123,97,255,0.14);transition:transform .18s ease,box-shadow .18s}
 .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
 .btn:hover{transform:translateY(-4px)}

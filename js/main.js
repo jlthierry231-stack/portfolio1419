@@ -23,3 +23,13 @@ document.addEventListener('click', e=>{
     if(nav.style.display==='flex'){nav.style.display='none'; e.target.textContent='☰'} else {nav.style.display='flex'; e.target.textContent='✕'}
   }
 })
+
+// animate logo on scroll
+window.addEventListener('scroll', () => {
+  const logo = document.querySelector('.logo');
+  if (window.scrollY > 50) {
+    logo.classList.add('animated');
+  } else {
+    logo.classList.remove('animated');
+  }
+});
