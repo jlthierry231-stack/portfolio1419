@@ -16,7 +16,7 @@
   <div class="container dashboard">
     <a href="../../index.html" class="btn ghost">Back</a>
     <h2>Buffalo Wings Dashboard — Houston, TX</h2>
-    <p class="lead">Animated ranking and quick details for best wings (demo data)</p>
+    <p class="lead">Interactive data visualization showcasing top-rated buffalo wings spots. Built with Chart.js for dynamic filtering and animations, demonstrating my 3-year expertise in frontend data handling, responsive design, and creating engaging user interfaces that make complex data accessible and visually appealing.</p>
 
     <div class="filters">
       <label>Neighborhood:
@@ -27,26 +27,47 @@
           <option value="heights">The Heights</option>
         </select>
       </label>
-      <button id="shuffle" class="btn small">Shuffle / Animate</button>
+      <button id="shuffle" class="btn small">Shuffle Data</button>
+      <button id="toggleChart" class="btn small">Toggle Chart Type</button>
     </div>
 
     <div class="chart-wrap">
       <canvas id="bars" height="120"></canvas>
     </div>
 
+    <div id="details" style="margin-top:1rem;color:var(--muted)"></div>
   </div>
 
   <script>
     const dataAll = [
-      {name:'Wing Spot A',score:92,area:'downtown'},
-      {name:'Hot Wings B',score:86,area:'midtown'},
-      {name:'Saucy Place',score:78,area:'heights'},
-      {name:'Cluckers',score:84,area:'downtown'},
-      {name:'Buffalo Bros',score:90,area:'heights'}
+      {name:'Wing Spot A',score:92,area:'downtown',desc:'Spicy buffalo wings with signature sauce.'},
+      {name:'Hot Wings B',score:86,area:'midtown',desc:'Crispy wings, perfect heat level.'},
+      {name:'Saucy Place',score:78,area:'heights',desc:'Tangy and flavorful, great for groups.'},
+      {name:'Cluckers',score:84,area:'downtown',desc:'Juicy wings with bold flavors.'},
+      {name:'Buffalo Bros',score:90,area:'heights',desc:'Authentic buffalo taste, highly rated.'}
     ];
 
     const ctx = document.getElementById('bars');
-    let chart = new Chart(ctx,{type:'bar',data:{labels:[],datasets:[{label:'Score',data:[],backgroundColor:[]}]},options:{animation:{duration:900},scales:{y:{beginAtZero:true,max:100}}}})
+    let chartType = 'bar';
+    let chart = new Chart(ctx,{
+      type:chartType,
+      data:{labels:[],datasets:[{label:'Score',data:[],backgroundColor:[]}]},
+      options:{
+        animation:{duration:900},
+        scales:{y:{beginAtZero:true,max:100}},
+        plugins:{
+          tooltip:{
+            callbacks:{
+              afterLabel: function(context) {
+                const idx = context.dataIndex;
+                const item = dataAll.find(d => d.name === context.label);
+                return item ? item.desc : '';
+              }
+            }
+          }
+        }
+      }
+    });
 
     function render(filter='all'){
       let items = dataAll.filter(d=>filter==='all'||d.area===filter);
@@ -55,10 +76,17 @@
       chart.data.datasets[0].data = items.map(i=>i.score);
       chart.data.datasets[0].backgroundColor = items.map((i,idx)=> idx%2? 'rgba(123,97,255,0.85)':'rgba(255,107,107,0.85)');
       chart.update();
+      const details = document.getElementById('details');
+      details.innerHTML = items.map(i => `<div>${i.name}: ${i.score}/100 - ${i.desc}</div>`).join('');
     }
 
     document.getElementById('neigh').addEventListener('change', e=>render(e.target.value));
-    document.getElementById('shuffle').addEventListener('click', ()=>{dataAll.sort(()=>Math.random()-0.5);render(document.getElementById('neigh').value)})
+    document.getElementById('shuffle').addEventListener('click', ()=>{dataAll.sort(()=>Math.random()-0.5);render(document.getElementById('neigh').value)});
+    document.getElementById('toggleChart').addEventListener('click', ()=>{
+      chartType = chartType === 'bar' ? 'doughnut' : 'bar';
+      chart.config.type = chartType;
+      chart.update();
+    });
     render();
   </script>
 </body>

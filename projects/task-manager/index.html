@@ -9,46 +9,87 @@
     .tm{padding:2rem}
     .board{display:flex;gap:1rem;flex-wrap:wrap}
     .panel{flex:1;min-width:260px;background:rgba(255,255,255,0.02);padding:1rem;border-radius:12px}
-    .task{display:flex;align-items:center;justify-content:space-between;padding:.6rem;border-radius:8px;margin:.4rem 0;background:linear-gradient(90deg,rgba(123,97,255,0.08),rgba(255,107,107,0.04));transition:transform .18s}
+    .task{display:flex;align-items:center;justify-content:space-between;padding:.6rem;border-radius:8px;margin:.4rem 0;background:linear-gradient(90deg,rgba(123,97,255,0.08),rgba(255,107,107,0.04));transition:transform .18s;cursor:grab}
     .task.done{opacity:.5;text-decoration:line-through}
+    .task.high{background:linear-gradient(90deg,rgba(255,107,107,0.2),rgba(255,59,59,0.1))}
+    .task.medium{background:linear-gradient(90deg,rgba(255,193,7,0.2),rgba(255,235,59,0.1))}
+    .task.dragging{opacity:0.5;transform:scale(1.05)}
     .add-row{display:flex;gap:.5rem;margin-bottom:.8rem}
   </style>
 </head>
 <body>
   <div class="container tm">
     <a href="../../index.html" class="btn ghost">Back</a>
-    <h2>Smart Task Manager (demo)</h2>
-    <p class="lead">Colorful, animated and user-friendly — tasks persist in localStorage.</p>
+    <h2>Smart Task Manager</h2>
+    <p class="lead">Advanced task management with drag-and-drop reordering, priority levels, and smooth animations. Built with vanilla JS and localStorage for persistence, showcasing my 3-year skills in interactive UI development, state management, and creating efficient, user-friendly productivity tools.</p>
 
     <div class="panel">
       <div class="add-row">
         <input id="newTask" placeholder="Add task" style="flex:1;padding:.6rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04)" />
+        <select id="priority">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
         <button id="add" class="btn small">Add</button>
       </div>
-      <div id="list"></div>
+      <div id="list" class="sortable-list"></div>
     </div>
   </div>
 
   <script>
-    const KEY='jt-tasks-v1';
+    const KEY='jt-tasks-v2';
     let tasks = JSON.parse(localStorage.getItem(KEY)||'[]');
     const list = document.getElementById('list');
+    let draggedEl = null;
 
     function save(){localStorage.setItem(KEY,JSON.stringify(tasks))}
-    function render(){list.innerHTML='';tasks.forEach((t,i)=>{
-      const el = document.createElement('div');el.className='task'+(t.done?' done':'');el.innerHTML = `<span>${t.text}</span><span><button data-i='${i}' class='btn small'>${t.done? 'Undo':'Done'}</button> <button data-r='${i}' class='btn small ghost'>Del</button></span>`;
-      el.addEventListener('animationend',()=>{});
-      list.appendChild(el);
-    })}
+    function render(){
+      list.innerHTML=''; 
+      tasks.forEach((t,i)=>{
+        const el = document.createElement('div');
+        el.className='task '+t.priority+(t.done?' done':'');
+        el.draggable = true;
+        el.dataset.index = i;
+        el.innerHTML = `<span>${t.text} (${t.priority})</span><span><button data-i='${i}' class='btn small'>${t.done? 'Undo':'Done'}</button> <button data-r='${i}' class='btn small ghost'>Del</button></span>`;
+        el.addEventListener('dragstart', dragStart);
+        el.addEventListener('dragover', dragOver);
+        el.addEventListener('drop', drop);
+        list.appendChild(el);
+      });
+    }
+
+    function dragStart(e){draggedEl = e.target; e.target.classList.add('dragging');}
+    function dragOver(e){e.preventDefault();}
+    function drop(e){
+      e.preventDefault();
+      if(draggedEl && draggedEl !== e.target){
+        const from = Number(draggedEl.dataset.index);
+        const to = Number(e.target.dataset.index);
+        const temp = tasks[from];
+        tasks.splice(from,1);
+        tasks.splice(to,0,temp);
+        save(); render();
+      }
+      draggedEl.classList.remove('dragging');
+      draggedEl = null;
+    }
 
     document.getElementById('add').addEventListener('click', ()=>{
-      const v = document.getElementById('newTask').value.trim(); if(!v) return; tasks.unshift({text:v,done:false}); document.getElementById('newTask').value=''; save(); render();
-    })
+      const v = document.getElementById('newTask').value.trim(); 
+      const p = document.getElementById('priority').value;
+      if(!v) return; 
+      tasks.unshift({text:v,done:false,priority:p}); 
+      document.getElementById('newTask').value=''; 
+      save(); render();
+    });
 
     list.addEventListener('click', e=>{
-      const i = e.target.getAttribute('data-i'); if(i!=null){tasks[i].done=!tasks[i].done; save(); render(); return}
-      const r = e.target.getAttribute('data-r'); if(r!=null){tasks.splice(r,1); save(); render(); return}
-    })
+      const i = e.target.getAttribute('data-i'); 
+      if(i!=null){tasks[i].done=!tasks[i].done; save(); render(); return}
+      const r = e.target.getAttribute('data-r'); 
+      if(r!=null){tasks.splice(r,1); save(); render(); return}
+    });
 
     render();
   </script>
