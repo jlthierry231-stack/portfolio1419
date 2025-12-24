@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Battleship — Jeremy Thierry</title>
+  <link href="/css/style.css" rel="stylesheet">
+  <style>
+    .game{padding:2rem}
+    .grid{display:grid;grid-template-columns:repeat(10,40px);gap:4px;margin:.8rem 0;max-width:440px}
+    .cell{width:40px;height:40px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s ease,background .2s}
+    .cell:hover{transform:translateY(-4px);background:rgba(255,255,255,0.05)}
+    .hit{background:linear-gradient(90deg,#ff6b6b,#ff9a6b);color:#071122;font-weight:700;animation:explode .5s ease-out}
+    .miss{background:rgba(255,255,255,0.03);opacity:.6}
+    .ship{background:linear-gradient(90deg,#7b61ff,#9a7bff);color:#071122}
+    @keyframes explode{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+    .controls{display:flex;gap:1rem;margin:1rem 0}
+    .status{font-weight:600;color:var(--accent1)}
+  </style>
+</head>
+<body>
+  <div class="container game">
+    <a href="/index.html" class="btn ghost">Back</a>
+    <h2>Battleship — Full Game</h2>
+    <p class="lead">Place your ships, then battle the AI. Sink all enemy ships to win!</p>
+    <div id="status" class="status">Place your ships: Click on the grid to place 3 ships.</div>
+    <div class="controls">
+      <button id="placeShips" class="btn small">Auto Place Ships</button>
+      <button id="startGame" class="btn small" disabled>Start Battle</button>
+      <button id="reset" class="btn small">Reset</button>
+    </div>
+    <div style="display:flex;gap:2rem;flex-wrap:wrap">
+      <div>
+        <h3>Your Fleet</h3>
+        <div id="playerGrid" class="grid"></div>
+      </div>
+      <div>
+        <h3>Enemy Waters</h3>
+        <div id="aiGrid" class="grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const playerGrid = document.getElementById('playerGrid');
+    const aiGrid = document.getElementById('aiGrid');
+    const status = document.getElementById('status');
+    const placeShipsBtn = document.getElementById('placeShips');
+    const startGameBtn = document.getElementById('startGame');
+    const resetBtn = document.getElementById('reset');
+
+    let playerShips = [];
+    let aiShips = [];
+    let playerHits = [];
+    let aiHits = [];
+    let gameStarted = false;
+    let playerTurn = true;
+
+    function createGrid(gridEl, isPlayer) {
+      gridEl.innerHTML = '';
+      for (let i = 0; i < 100; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.i = i;
+        if (isPlayer) {
+          cell.addEventListener('click', placeShip);
+        } else {
+          cell.addEventListener('click', attackAI);
+        }
+        gridEl.appendChild(cell);
+      }
+    }
+
+    function placeShip(e) {
+      if (gameStarted || playerShips.length >= 3) return;
+      const i = Number(e.currentTarget.dataset.i);
+      if (playerShips.includes(i)) return;
+      playerShips.push(i);
+      e.currentTarget.classList.add('ship');
+      e.currentTarget.textContent = '🚢';
+      if (playerShips.length === 3) {
+        status.textContent = 'Ships placed! Click "Start Battle" to begin.';
+        startGameBtn.disabled = false;
+      }
+    }
+
+    function autoPlaceShips() {
+      if (gameStarted) return;
+      playerShips = [];
+      const cells = playerGrid.querySelectorAll('.cell');
+      cells.forEach(c => c.classList.remove('ship'));
+      while (playerShips.length < 3) {
+        const r = Math.floor(Math.random() * 100);
+        if (!playerShips.includes(r)) {
+          playerShips.push(r);
+          cells[r].classList.add('ship');
+          cells[r].textContent = '🚢';
+        }
+      }
+      status.textContent = 'Ships placed! Click "Start Battle" to begin.';
+      startGameBtn.disabled = false;
+    }
+
+    function placeAIShips() {
+      aiShips = [];
+      while (aiShips.length < 3) {
+        const r = Math.floor(Math.random() * 100);
+        if (!aiShips.includes(r)) aiShips.push(r);
+      }
+    }
+
+    function startGame() {
+      gameStarted = true;
+      placeAIShips();
+      status.textContent = 'Battle started! Your turn to attack.';
+      startGameBtn.disabled = true;
+      placeShipsBtn.disabled = true;
+    }
+
+    function attackAI(e) {
+      if (!gameStarted || !playerTurn) return;
+      const i = Number(e.currentTarget.dataset.i);
+      if (aiHits.includes(i)) return;
+      aiHits.push(i);
+      if (aiShips.includes(i)) {
+        e.currentTarget.classList.add('hit');
+        e.currentTarget.textContent = '💥';
+        status.textContent = 'Hit! Take another turn.';
+      } else {
+        e.currentTarget.classList.add('miss');
+        e.currentTarget.textContent = '•';
+        status.textContent = 'Miss! AI\'s turn.';
+        playerTurn = false;
+        setTimeout(aiTurn, 1000);
+      }
+      checkWin();
+    }
+
+    function aiTurn() {
+      let attack;
+      do {
+        attack = Math.floor(Math.random() * 100);
+      } while (playerHits.includes(attack));
+      playerHits.push(attack);
+      const cell = playerGrid.querySelector(`[data-i="${attack}"]`);
+      if (playerShips.includes(attack)) {
+        cell.classList.add('hit');
+        cell.textContent = '💥';
+        status.textContent = 'AI hit your ship! AI takes another turn.';
+        setTimeout(aiTurn, 1000);
+      } else {
+        cell.classList.add('miss');
+        cell.textContent = '•';
+        status.textContent = 'AI missed! Your turn.';
+        playerTurn = true;
+      }
+      checkWin();
+    }
+
+    function checkWin() {
+      const playerSunk = aiShips.every(s => aiHits.includes(s));
+      const aiSunk = playerShips.every(s => playerHits.includes(s));
+      if (playerSunk) {
+        status.textContent = 'You win! All enemy ships sunk.';
+        gameStarted = false;
+        confetti();
+      } else if (aiSunk) {
+        status.textContent = 'AI wins! All your ships sunk.';
+        gameStarted = false;
+      }
+    }
+
+    function confetti() {
+      for (let i = 0; i < 50; i++) {
+        const p = document.createElement('div');
+        p.style.position = 'fixed';
+        p.style.left = (Math.random() * 100) + '%';
+        p.style.top = (Math.random() * -20) + '%';
+        p.style.width = '8px';
+        p.style.height = '14px';
+        p.style.background = ['#7b61ff', '#ff6b6b', '#ffd36b'][Math.floor(Math.random() * 3)];
+        p.style.transform = `rotate(${Math.random() * 360}deg)`;
+        p.style.opacity = 0.95;
+        p.style.transition = 'transform 1.4s linear, top 1.4s linear, opacity .6s';
+        document.body.appendChild(p);
+        setTimeout(() => {
+          p.style.top = (60 + Math.random() * 30) + '%';
+          p.style.transform = 'translateY(200px) rotate(100deg)';
+          p.style.opacity = 0;
+        }, 10);
+        setTimeout(() => p.remove(), 1700);
+      }
+    }
+
+    function resetGame() {
+      playerShips = [];
+      aiShips = [];
+      playerHits = [];
+      aiHits = [];
+      gameStarted = false;
+      playerTurn = true;
+      status.textContent = 'Place your ships: Click on the grid to place 3 ships.';
+      startGameBtn.disabled = true;
+      placeShipsBtn.disabled = false;
+      createGrid(playerGrid, true);
+      createGrid(aiGrid, false);
+    }
+
+    placeShipsBtn.addEventListener('click', autoPlaceShips);
+    startGameBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', resetGame);
+
+    createGrid(playerGrid, true);
+    createGrid(aiGrid, false);
+  </script>
+</body>
+</html>

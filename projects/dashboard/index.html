@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Buffalo Wings Dashboard — Jeremy Thierry</title>
+  <link href="/css/style.css" rel="stylesheet">
+  <style>
+    .dashboard{padding:2rem}
+    .chart-wrap{background:rgba(255,255,255,0.02);padding:1rem;border-radius:12px}
+    .filters{display:flex;gap:.5rem;margin-bottom:1rem}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container dashboard">
+    <a href="/index.html" class="btn ghost">Back</a>
+    <h2>Buffalo Wings Dashboard — Houston, TX</h2>
+    <p class="lead">Animated ranking and quick details for best wings (demo data)</p>
+
+    <div class="filters">
+      <label>Neighborhood:
+        <select id="neigh">
+          <option value="all">All</option>
+          <option value="downtown">Downtown</option>
+          <option value="midtown">Midtown</option>
+          <option value="heights">The Heights</option>
+        </select>
+      </label>
+      <button id="shuffle" class="btn small">Shuffle / Animate</button>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="bars" height="120"></canvas>
+    </div>
+
+  </div>
+
+  <script>
+    const dataAll = [
+      {name:'Wing Spot A',score:92,area:'downtown'},
+      {name:'Hot Wings B',score:86,area:'midtown'},
+      {name:'Saucy Place',score:78,area:'heights'},
+      {name:'Cluckers',score:84,area:'downtown'},
+      {name:'Buffalo Bros',score:90,area:'heights'}
+    ];
+
+    const ctx = document.getElementById('bars');
+    let chart = new Chart(ctx,{type:'bar',data:{labels:[],datasets:[{label:'Score',data:[],backgroundColor:[]}]},options:{animation:{duration:900},scales:{y:{beginAtZero:true,max:100}}}})
+
+    function render(filter='all'){
+      let items = dataAll.filter(d=>filter==='all'||d.area===filter);
+      items = items.sort((a,b)=>b.score-a.score);
+      chart.data.labels = items.map(i=>i.name);
+      chart.data.datasets[0].data = items.map(i=>i.score);
+      chart.data.datasets[0].backgroundColor = items.map((i,idx)=> idx%2? 'rgba(123,97,255,0.85)':'rgba(255,107,107,0.85)');
+      chart.update();
+    }
+
+    document.getElementById('neigh').addEventListener('change', e=>render(e.target.value));
+    document.getElementById('shuffle').addEventListener('click', ()=>{dataAll.sort(()=>Math.random()-0.5);render(document.getElementById('neigh').value)})
+    render();
+  </script>
+</body>
+</html>

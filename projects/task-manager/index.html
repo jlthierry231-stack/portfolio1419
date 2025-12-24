@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Smart Task Manager — Jeremy Thierry</title>
+  <link href="/css/style.css" rel="stylesheet">
+  <style>
+    .tm{padding:2rem}
+    .board{display:flex;gap:1rem;flex-wrap:wrap}
+    .panel{flex:1;min-width:260px;background:rgba(255,255,255,0.02);padding:1rem;border-radius:12px}
+    .task{display:flex;align-items:center;justify-content:space-between;padding:.6rem;border-radius:8px;margin:.4rem 0;background:linear-gradient(90deg,rgba(123,97,255,0.08),rgba(255,107,107,0.04));transition:transform .18s}
+    .task.done{opacity:.5;text-decoration:line-through}
+    .add-row{display:flex;gap:.5rem;margin-bottom:.8rem}
+  </style>
+</head>
+<body>
+  <div class="container tm">
+    <a href="/index.html" class="btn ghost">Back</a>
+    <h2>Smart Task Manager (demo)</h2>
+    <p class="lead">Colorful, animated and user-friendly — tasks persist in localStorage.</p>
+
+    <div class="panel">
+      <div class="add-row">
+        <input id="newTask" placeholder="Add task" style="flex:1;padding:.6rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04)" />
+        <button id="add" class="btn small">Add</button>
+      </div>
+      <div id="list"></div>
+    </div>
+  </div>
+
+  <script>
+    const KEY='jt-tasks-v1';
+    let tasks = JSON.parse(localStorage.getItem(KEY)||'[]');
+    const list = document.getElementById('list');
+
+    function save(){localStorage.setItem(KEY,JSON.stringify(tasks))}
+    function render(){list.innerHTML='';tasks.forEach((t,i)=>{
+      const el = document.createElement('div');el.className='task'+(t.done?' done':'');el.innerHTML = `<span>${t.text}</span><span><button data-i='${i}' class='btn small'>${t.done? 'Undo':'Done'}</button> <button data-r='${i}' class='btn small ghost'>Del</button></span>`;
+      el.addEventListener('animationend',()=>{});
+      list.appendChild(el);
+    })}
+
+    document.getElementById('add').addEventListener('click', ()=>{
+      const v = document.getElementById('newTask').value.trim(); if(!v) return; tasks.unshift({text:v,done:false}); document.getElementById('newTask').value=''; save(); render();
+    })
+
+    list.addEventListener('click', e=>{
+      const i = e.target.getAttribute('data-i'); if(i!=null){tasks[i].done=!tasks[i].done; save(); render(); return}
+      const r = e.target.getAttribute('data-r'); if(r!=null){tasks.splice(r,1); save(); render(); return}
+    })
+
+    render();
+  </script>
+</body>
+</html>
