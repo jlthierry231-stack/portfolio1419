@@ -59,6 +59,46 @@
     let gameStarted = false;
     let playerTurn = true;
 
+    // Audio context for sound effects
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(frequency, duration, type = 'sine', volume = 0.3) {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+      oscillator.type = type;
+      gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + duration);
+    }
+
+    function playHit() {
+      playSound(150, 0.6, 'sawtooth', 0.4); // Deep explosion
+      setTimeout(() => playSound(100, 0.4, 'sawtooth', 0.2), 100);
+    }
+
+    function playMiss() {
+      playSound(200, 0.3, 'triangle', 0.2); // Splash-like
+    }
+
+    function playPlace() {
+      playSound(600, 0.15, 'sine', 0.3); // High beep for placement
+    }
+
+    function playStart() {
+      playSound(400, 0.3, 'sine', 0.3);
+      setTimeout(() => playSound(500, 0.3, 'sine', 0.3), 150);
+    }
+
+    function playWin() {
+      playSound(523, 0.2, 'sine', 0.4); // C
+      setTimeout(() => playSound(659, 0.2, 'sine', 0.4), 200); // E
+      setTimeout(() => playSound(784, 0.4, 'sine', 0.4), 400); // G
+    }
+
     function createGrid(gridEl, isPlayer) {
       gridEl.innerHTML = '';
       for (let i = 0; i < 100; i++) {
@@ -80,6 +120,7 @@
       if (playerShips.includes(i)) return;
       playerShips.push(i);
       e.currentTarget.classList.add('ship');
+      playPlace();
       if (playerShips.length === 3) {
         status.textContent = 'Ships placed! Click "Start Battle" to begin.';
         startGameBtn.disabled = false;
@@ -96,6 +137,7 @@
         if (!playerShips.includes(r)) {
           playerShips.push(r);
           cells[r].classList.add('ship');
+          playPlace();
         }
       }
       status.textContent = 'Ships placed! Click "Start Battle" to begin.';
@@ -113,6 +155,7 @@
     function startGame() {
       gameStarted = true;
       placeAIShips();
+      playStart();
       status.textContent = 'Battle started! Your turn to attack.';
       startGameBtn.disabled = true;
       placeShipsBtn.disabled = true;
@@ -126,10 +169,12 @@
       if (aiShips.includes(i)) {
         e.currentTarget.classList.add('hit');
         e.currentTarget.textContent = '💥';
+        playHit();
         status.textContent = 'Hit! Take another turn.';
       } else {
         e.currentTarget.classList.add('miss');
         e.currentTarget.textContent = '•';
+        playMiss();
         status.textContent = 'Miss! AI\'s turn.';
         playerTurn = false;
         setTimeout(aiTurn, 1000);
@@ -147,11 +192,13 @@
       if (playerShips.includes(attack)) {
         cell.classList.add('hit');
         cell.textContent = '💥';
+        playHit();
         status.textContent = 'AI hit your ship! AI takes another turn.';
         setTimeout(aiTurn, 1000);
       } else {
         cell.classList.add('miss');
         cell.textContent = '•';
+        playMiss();
         status.textContent = 'AI missed! Your turn.';
         playerTurn = true;
       }
@@ -163,6 +210,7 @@
       const aiSunk = playerShips.every(s => playerHits.includes(s));
       if (playerSunk) {
         status.textContent = 'You win! All enemy ships sunk.';
+        playWin();
         gameStarted = false;
         confetti();
       } else if (aiSunk) {
