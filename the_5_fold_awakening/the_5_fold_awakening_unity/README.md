@@ -21,6 +21,8 @@ Assets/
 │   ├── GameManager.cs          # Overall game state and settings
 │   ├── SceneSetup.cs           # Scene initialization and world setup
 │   ├── AudioManager.cs         # Audio management and playback system
+│   ├── TestSceneSetup.cs       # Automatic test scene creation
+│   ├── GameTester.cs           # Runtime testing and validation
 │   └── AudioSetupHelper.cs     # Helper script for testing audio setup
 ├── Audio/
 │   ├── Music/                  # Background music tracks
@@ -60,7 +62,45 @@ Assets/
 - Lighting configuration
 - Camera positioning
 
-## Setup Instructions
+### AudioManager
+- Dynamic music system that changes based on game state
+- Voice acting for characters and narrator
+- Sound effects for interactions and story progression
+- Volume controls for different audio types
+- Smooth music transitions with fade effects
+
+### TestSceneSetup
+- Automatic creation of test scene with all necessary components
+- Basic UI panels for dialogue, story, and menus
+- Sample environment with interactable objects
+- Ready-to-play test environment
+
+### GameTester
+- Comprehensive runtime testing system
+- Component validation and error checking
+- Interactive test methods for all game systems
+- Debug logging for troubleshooting
+
+## Quick Start Testing
+
+### Automatic Test Scene
+1. **Create New Scene**: File → New Scene
+2. **Add TestSceneSetup**: Create empty GameObject → Add Component → TestSceneSetup
+3. **Run**: Press Play - the system will automatically create a complete test environment
+4. **Test Features**:
+   - **Movement**: WASD to move, mouse to look
+   - **Interaction**: Move near Lyra and press E to talk
+   - **Story**: Press Tab to view story and objectives
+   - **Menu**: Click "START GAME" to begin
+
+### Manual Testing
+1. **Add GameTester Component**: To any GameObject in your scene
+2. **Run Tests**: The system will automatically validate all components on start
+3. **Manual Tests**: Use the public methods to test specific features:
+   - `TestMovement()` - Test player controls
+   - `TestInteraction()` - Test character dialogue
+   - `TestStory()` - Test story system
+   - `TestAudio()` - Test audio playback
 
 1. **Open in Unity**: Open this project folder in Unity (recommended version: 2021.3+)
 2. **Create Scene**: Create a new scene and add the SceneSetup script to an empty GameObject
