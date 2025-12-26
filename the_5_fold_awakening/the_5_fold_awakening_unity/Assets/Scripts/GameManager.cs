@@ -29,9 +29,6 @@ public class GameManager : MonoBehaviour
     private bool gameStarted = false;
     private bool isInMission = false;
 
-    private bool isPaused = false;
-    private bool gameStarted = false;
-
     void Start()
     {
         if (instance == null)
