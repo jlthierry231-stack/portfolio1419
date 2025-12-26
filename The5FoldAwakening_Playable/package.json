@@ -1,0 +1,46 @@
+{
+  "name": "the-5-fold-awakening-playable",
+  "version": "1.0.0",
+  "description": "A complete, playable version of The 5 Fold Awakening - a third-person adventure game blending magic and technology",
+  "main": "Assets/Scripts/The5FoldAwakening.cs",
+  "scripts": {
+    "start": "echo 'Open this project in Unity to play the game'",
+    "build": "echo 'Use Unity Build Settings to create executable'"
+  },
+  "keywords": [
+    "unity",
+    "game",
+    "adventure",
+    "third-person",
+    "magic",
+    "technology",
+    "indie-game"
+  ],
+  "author": "Jeremy Thierry (jlthierry231)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jlthierry231-stack/portfolio1419.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jlthierry231-stack/portfolio1419/issues"
+  },
+  "homepage": "https://jlthierry231-stack.github.io/portfolio1419/",
+  "unity": {
+    "version": "2021.3+",
+    "platforms": ["Standalone", "WebGL"],
+    "dependencies": {}
+  },
+  "gameFeatures": {
+    "genre": "Adventure",
+    "perspective": "Third-Person",
+    "theme": "Magic & Technology",
+    "systems": [
+      "Dynamic Audio System",
+      "Interactive Characters",
+      "Story-Driven Gameplay",
+      "Settings Management",
+      "UI System"
+    ]
+  }
+}
