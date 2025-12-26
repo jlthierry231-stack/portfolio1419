@@ -1,0 +1,100 @@
+// Audio Configuration Guide for "The 5 Fold Awakening" Unity Version
+//
+// This file provides guidance on setting up the audio system in Unity.
+// The AudioManager script requires specific audio clips to be assigned in the inspector.
+//
+// AUDIO FILE REQUIREMENTS:
+// ========================
+//
+// 1. MUSIC TRACKS (place in Assets/Audio/Music/)
+//    - adventure_music.mp3/.wav: Fast-paced, adventurous music for missions
+//    - peaceful_music.mp3/.wav: Calm, exploratory music for regular gameplay
+//    - menu_music.mp3/.wav: Atmospheric music for menus and settings
+//
+// 2. CHARACTER VOICES (place in Assets/Audio/Voices/Characters/)
+//    - Each character should have multiple voice clips for different dialogues
+//    - Format: character_[name]_[dialogue_index].mp3/.wav
+//    - Example: character_lyra_01.mp3, character_lyra_02.mp3
+//
+// 3. NARRATOR VOICES (place in Assets/Audio/Voices/Narrator/)
+//    - One voice clip per story segment
+//    - Format: narrator_story_[index].mp3/.wav
+//    - Example: narrator_story_01.mp3, narrator_story_02.mp3
+//
+// 4. SOUND EFFECTS (place in Assets/Audio/SFX/)
+//    - interaction.mp3/.wav: Sound when interacting with characters/objects
+//    - objective_complete.mp3/.wav: Sound when completing objectives
+//    - story_advance.mp3/.wav: Sound when story progresses
+//
+// UNITY SETUP INSTRUCTIONS:
+// =========================
+//
+// 1. Create AudioManager GameObject:
+//    - GameObject -> Create Empty
+//    - Name it "AudioManager"
+//    - Add Component -> AudioManager (your script)
+//
+// 2. Assign Audio Clips in Inspector:
+//    - Drag music files to Music Clips section
+//    - Drag character voice arrays to Voice Clips section
+//    - Drag narrator voices to Narrator Voices array
+//    - Drag SFX files to SFX Clips section
+//
+// 3. Configure Audio Sources (Optional):
+//    - The script auto-creates AudioSource components
+//    - You can assign existing ones if preferred
+//
+// 4. Set Volume Levels:
+//    - Adjust default volumes in the inspector
+//    - These will be overridden by player settings
+//
+// TESTING THE AUDIO SYSTEM:
+// =========================
+//
+// Use the AudioSetupHelper script for testing:
+// 1. Add AudioSetupHelper component to any GameObject
+// 2. Assign test audio clips in its inspector
+// 3. Call test methods from UI buttons or console:
+//    - TestAdventureMusic()
+//    - TestPeacefulMusic()
+//    - TestCharacterVoice()
+//    - TestInteractionSFX()
+//    etc.
+//
+// AUDIO BEST PRACTICES:
+// =====================
+//
+// 1. File Formats:
+//    - Use MP3 for music (smaller file size)
+//    - Use WAV for short SFX and voices (better quality)
+//    - Keep sample rates at 44.1kHz or 48kHz
+//
+// 2. File Naming:
+//    - Use consistent naming conventions
+//    - Include character names and dialogue indices
+//    - Use underscores, not spaces
+//
+// 3. Audio Length:
+//    - Music loops should be 30-60 seconds
+//    - Voice clips should match dialogue reading time
+//    - SFX should be 1-3 seconds max
+//
+// 4. Volume Balancing:
+//    - Test all audio together in-game
+//    - Ensure voices are clear over music
+//    - SFX should be noticeable but not overwhelming
+//
+// INTEGRATION WITH GAME SYSTEMS:
+// ==============================
+//
+// The audio system automatically integrates with:
+// - GameManager: Music transitions based on game state
+// - CharacterManager: Voice playback during dialogues
+// - StorySystem: Narrator voices for story segments
+// - Settings: Volume controls and audio toggles
+//
+// For custom audio triggers, call AudioManager.instance methods:
+// - PlayAdventureMusic()
+// - PlayCharacterVoice(characterIndex, dialogueIndex)
+// - PlayInteractionSound()
+// etc.
