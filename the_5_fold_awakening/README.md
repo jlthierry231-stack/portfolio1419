@@ -1,6 +1,10 @@
-# The 5 Fold Awakening
+# The 5 Fold Awakening - Demo Version
 
-A first-person adventure game blending magic and technology, inspired by Star Wars and Harry Potter.
+A first-person adventure game demo blending magic and technology, inspired by Star Wars and Harry Potter.
+
+## Demo Overview
+
+This demo showcases the first two chapters of the full game, focusing on character introduction, world-building, and core mechanics. Experience Kael's awakening journey with enhanced story depth, character interactions, and immersive details.
 
 ## Storyline
 
@@ -12,14 +16,72 @@ A first-person adventure game blending magic and technology, inspired by Star Wa
 - Born with dormant affinity for all five elements (Earth, Water, Fire, Air, Spirit)
 - Trained his whole life but cannot access a single spark of magic
 - Lives in a technologically advanced continent where magic is regulated, scanned, and ranked
+- Personality: Determined, frustrated, kind-hearted, brave in non-magical ways
 
 **Main Companion / Love Interest:** Lyra Vale
 - Same age as Kael
 - Stunning beauty, wins youth pageants, featured in local holo-magazines
 - Fiercely loyal, smart, kind, and the only one who always believed in Kael
 - Discovers she also has a rare magical anomaly
+- Personality: Confident, protective, empathetic, with a hidden vulnerability
 
-### Game Chapters (Adapted from 54-Chapter Book Outline)
+**Supporting Characters:**
+- **Tech-Mage Parents**: Stern but loving father (engineer), nurturing mother (healer). Emphasize discipline and potential.
+- **Academy Staff**: Holo-tutors with AI personalities, strict instructors, friendly librarians.
+- **Bullies/Classmates**: Represent societal pressures, contrast with Lyra's support.
+
+## Demo Chapters
+
+**Chapter 1: The Child With All Affinities and No Power**
+- Meet Kael Ardin, a 10-year-old with dormant five-element magic
+- Experience his daily life, family interactions, and first magical attempts
+- Discover the tech-magic world of Eldoria
+- Objectives: Explore home, talk to parents, attempt magic, meet Lyra
+
+**Chapter 2: Academy of Sparks**
+- Attend the futuristic Magic Academy
+- Interact with Lyra, face initial challenges
+- Learn about the balance of magic and technology
+- Objectives: Navigate academy, attend class, defend against bullies, uncover first clue
+
+## Enhanced Features in Demo
+
+### Character Development
+- **Kael Ardin**: Shy, determined boy with hidden potential. Voice lines express frustration and hope.
+- **Lyra Vale**: Confident, loyal friend with beauty and brains. Reveals supportive personality.
+- **Tech-Mage Parents**: Stern but loving, emphasizing discipline and potential.
+- **Academy Staff**: Holo-tutors and instructors with distinct personalities.
+
+### Story Dynamics
+- Branching dialogues based on choices
+- Multiple endings for demo based on interactions
+- Quest objectives with rewards
+- Emotional arcs and character growth hints
+
+### World Details
+- Detailed environments: Home, Academy, Outdoor areas
+- Interactive objects: Books, scanners, magical artifacts
+- Atmospheric effects: Weather, lighting changes
+- Sound design: Ambient sounds, voice acting placeholders
+
+### Gameplay Mechanics
+- Exploration with hidden secrets
+- Puzzle elements introducing magic-tech concepts
+- Combat tutorial with non-lethal training
+- Inventory management with magical items
+
+## Demo Objectives
+
+1. **Explore Kael's Home**: Interact with family, find personal items
+2. **Attend Academy**: Navigate classrooms, meet Lyra, experience first lesson
+3. **Discover Secrets**: Find hidden lore about the Fivefold Mage
+4. **Make Choices**: Dialogue choices affect demo ending
+
+## Demo Limitations
+
+- Limited to Chapters 1-2
+- Some areas are placeholder for full game
+- Ending leads to teaser for complete story
 
 **Book I — THE BOY WITH NO MAGIC (Levels 1–3)**
 
@@ -70,22 +132,35 @@ A first-person adventure game blending magic and technology, inspired by Star Wa
 - **Magic Elements**: Cast spells, interact with magical crystals
 - **Technology Elements**: Droids, futuristic environments
 - **Story Integration**: Narrative progression with key events
+- **Character Interactions**: Dialogue with NPCs, branching choices
+- **World Building**: Detailed environments with interactive objects
+- **Settings Menu**: Customizable controls and display options
 - **Controls**:
   - WASD: Move
   - Mouse: Look around
   - Space: Jump
-  - Click: Cast spell (consumes mana)
-  - E: Advance story (when available)
-  - E: Advance story (when available)
-- **HUD**: Health, Mana, Inventory, Story display
+  - Click: Cast spell (when available)
+  - E: Interact/Advance story
+  - Settings: Access customization menu
+- **HUD**: Health, Mana, Stamina bars, Inventory, Story display
 
 ## How to Play
 
-1. Use WASD to move around the scene
-2. Move mouse to look around
-3. Click to cast a magic bolt (yellow sphere)
-4. Press E near story triggers to advance the narrative
-5. Explore the crystal and droid for interactions
+1. Start with the animated intro of Kael waking up
+2. Use WASD to move around the scene
+3. Move mouse to look around (customizable in settings)
+4. Press E near objects/NPCs to interact and advance story
+5. Click to cast a magic bolt (yellow sphere) when mana allows
+6. Explore the world, talk to characters, complete objectives
+7. Make dialogue choices that affect the demo ending
+8. Access settings to customize controls and display
+
+## Demo Progression
+
+- **Home Scene**: Learn about Kael's life, interact with parents
+- **Transition**: Walk to Academy
+- **Academy Scene**: Meet Lyra, face challenges, learn magic basics
+- **Ending**: Based on choices, get teaser for full game
 
 ## Technologies
 
@@ -96,12 +171,23 @@ A first-person adventure game blending magic and technology, inspired by Star Wa
 
 ## Development
 
-Open `index.html` in a modern browser to play. No server required.
+Open `index.html` in a modern browser to play the demo. No server required.
 
-## Future Enhancements
+## Future Development Focus
 
-- More levels/scenes based on story chapters
-- Enemies and combat
-- Quests and story branches
-- Sound effects
-- VR support
+- Full 54-chapter story implementation
+- Advanced magic system with all five elements
+- Combat and quest systems
+- Multiplayer elements
+- VR/AR support
+
+## Feedback
+
+This demo version is designed for iterative development. Please provide feedback on:
+- Story pacing and emotional impact
+- Character depth and relatability
+- World immersion and detail level
+- Gameplay mechanics and balance
+- UI/UX and accessibility
+
+Your input will guide the development of the full game!

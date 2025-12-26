@@ -10,12 +10,33 @@
 <body>
   <div id="ui">
     <div id="hud">
-      <div id="health">Health: 100</div>
-      <div id="mana">Mana: 50</div>
+      <div class="bar">
+        <label>Health</label>
+        <div class="bar-fill health-bar" id="healthBar"></div>
+      </div>
+      <div class="bar">
+        <label>Mana</label>
+        <div class="bar-fill mana-bar" id="manaBar"></div>
+      </div>
+      <div class="bar">
+        <label>Stamina</label>
+        <div class="bar-fill stamina-bar" id="staminaBar"></div>
+      </div>
       <div id="inventory">Inventory: Wand, Blaster</div>
     </div>
     <div id="crosshair">+</div>
     <div id="story" style="display:none;"></div>
+    <button id="settingsBtn" style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.7);color:#fff;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Settings</button>
+    <div id="settingsPanel" style="display:none;position:absolute;top:50px;right:10px;background:rgba(0,0,0,0.9);color:#fff;padding:10px;border-radius:5px;width:200px;">
+      <h4>Settings</h4>
+      <label><input type="checkbox" id="invertY"> Invert Y-axis</label><br>
+      <label>Mouse Sensitivity: <input type="range" id="sensitivity" min="0.1" max="2" step="0.1" value="1"></label><br>
+      <label><input type="checkbox" id="showFPS"> Show FPS</label><br>
+      <label>Volume: <input type="range" id="volume" min="0" max="1" step="0.1" value="0.5"></label><br>
+      <label><input type="checkbox" id="shadows"> Enable Shadows</label><br>
+      <button id="closeSettings">Close</button>
+    </div>
+    <div id="fpsDisplay" style="display:none;position:absolute;bottom:10px;left:10px;color:#fff;font-size:14px;"></div>
   </div>
   <div id="gameContainer"></div>
 
