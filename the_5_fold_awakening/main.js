@@ -176,6 +176,28 @@ const controls = {
   direction: new THREE.Vector3(),
 };
 
+// Settings
+let settings = {
+  invertY: false,
+  sensitivity: 1,
+  showFPS: false,
+  volume: 0.5,
+  shadows: true
+};
+
+// Load settings from localStorage
+if (localStorage.getItem('gameSettings')) {
+  settings = JSON.parse(localStorage.getItem('gameSettings'));
+}
+
+// Apply initial settings
+function applySettings() {
+  document.getElementById('fpsDisplay').style.display = settings.showFPS ? 'block' : 'none';
+  renderer.shadowMap.enabled = settings.shadows;
+}
+
+applySettings();
+
 document.addEventListener('keydown', (event) => {
   switch (event.code) {
     case 'ArrowUp':
@@ -280,39 +302,10 @@ const storyTexts = [
 
 let currentLocation = 'home'; // home, transition, academy
 
-// Settings
-let settings = {
-  invertY: false,
-  sensitivity: 1,
-  showFPS: false,
-  volume: 0.5,
-  shadows: true
-};
-
-// Load settings from localStorage
-if (localStorage.getItem('gameSettings')) {
-  settings = JSON.parse(localStorage.getItem('gameSettings'));
-}
-
-// Apply initial settings
-function applySettings() {
-  document.getElementById('fpsDisplay').style.display = settings.showFPS ? 'block' : 'none';
-  renderer.shadowMap.enabled = settings.shadows;
-}
-
 applySettings();
-const storyTexts = [
-  "Chapter 1: The Child With All Affinities and No Power\n\nYou are Kael Ardin, a 10-year-old boy with dormant magic for all five elements. Despite training, you can't access any power. Your friend Lyra comforts you after another failed test.",
-  "Chapter 2: Academy of Sparks\n\nYou attend the futuristic magic academy. Holo-construct tutors teach spell theory, but students mock you for being 'Zero-Spark.'",
-  "Chapter 3: A Friend Like No Other\n\nLyra stands up to bullies, showing her loyalty. She hints at a secret of her own.",
-  "Chapter 4: Scanners Can’t Explain It\n\nA full-spectrum scan confirms your top 0.01% potential, but zero output. Confusion reigns.",
-  "Chapter 5: Training Drones and Wooden Swords\n\nYou excel in non-magical combat, surprising instructors. Lyra trains with you.",
-  "Chapter 6: The Lesson of Endurance\n\nPushing too hard in a simulation, you get hurt. Lyra carries you to the infirmary.",
-  "Chapter 7: Rumors of Dark Mages\n\nNews of Dark Mages spreads. Security tightens at the academy.",
-  "Chapter 8: The Festival of Lights\n\nAt the celebration, Lyra wins an award. She reassures you with a kiss on the cheek.",
-  "Chapter 9: The Night the Vision Came\n\nYou collapse and enter a spirit realm vision.",
-  "Chapter 10: The Ancient Archmage Appears\n\nArchmage Elion reveals your destiny: You are the Fivefold Mage, destined to stop Malakar the Voidborn."
-];
+
+// Show initial story on load
+showStory();
 
 function showStory() {
   const storyDiv = document.getElementById('story');
